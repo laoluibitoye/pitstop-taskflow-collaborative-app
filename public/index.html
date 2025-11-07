@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional team task management with real-time collaboration, progress tracking, and seamless workflows">
+    <meta name="theme-color" content="#6366f1">
+    <title>TaskFlow - Team Task Collaboration</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="light-theme">
+    
+    <!-- Landing Page -->
+    <div id="landingPage" class="landing-page">
+        <nav class="landing-nav">
+            <div class="container">
+                <div class="nav-brand">
+                    <i class="fas fa-tasks"></i>
+                    <span>TaskFlow</span>
+                </div>
+                <div class="nav-actions">
+                    <button id="navLoginBtn" class="btn btn-outline">Login</button>
+                    <button id="navSignupBtn" class="btn btn-primary">Get Started</button>
+                </div>
+            </div>
+        </nav>
+        
+        <section class="hero">
+            <div class="container">
+                <h1>Team Collaboration Made Simple</h1>
+                <p>Real-time task management with instant updates and seamless coordination</p>
+                <button id="heroStartBtn" class="btn btn-large btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    <span>Start Collaborating Now</span>
+                </button>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Main App -->
+    <div id="appContainer" class="app-container hidden">
+        <nav class="app-nav">
+            <div class="nav-content">
+                <div class="nav-brand"><i class="fas fa-tasks"></i> TaskFlow</div>
+                <div class="nav-actions">
+                    <button id="themeToggle" class="btn-icon"><i class="fas fa-moon"></i></button>
+                    <div class="user-menu">
+                        <button id="userMenuBtn" class="btn btn-sm"><i class="fas fa-user"></i> <span id="userName">User</span></button>
+                        <div id="userDropdown" class="dropdown hidden">
+                            <button id="logoutBtn" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <main class="main-content">
+            <div class="controls">
+                <input type="date" id="datePicker">
+                <input type="text" id="searchInput" placeholder="Search tasks...">
+                <select id="statusFilter">
+                    <option value="">All Status</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                    <option value="delayed">Delayed</option>
+                </select>
+            </div>
+            
+            <div class="quick-add">
+                <input type="text" id="newTaskInput" placeholder="Add a task...">
+                <button id="addTaskBtn" class="btn btn-primary">Add</button>
+            </div>
+            
+            <div id="tasksContainer" class="tasks-container"></div>
+            <div id="emptyState" class="empty-state hidden">No tasks found</div>
+        </main>
+        
+        <aside id="usersSidebar" class="users-sidebar">
+            <h3>Online (<span id="onlineCount">0</span>)</h3>
+            <ul id="usersList"></ul>
+        </aside>
+    </div>
+    
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="closeAuthModal"><i class="fas fa-times"></i></button>
+            <div id="loginForm">
+                <h2>Login</h2>
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button id="loginSubmit" class="btn btn-primary btn-block">Login</button>
+                <p><a href="#" id="showRegister">Create account</a> | <a href="#" id="showGuest">Continue as guest</a></p>
+            </div>
+            <div id="registerForm" class="hidden">
+                <h2>Register</h2>
+                <input type="text" id="registerName" placeholder="Name" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <button id="registerSubmit" class="btn btn-primary btn-block">Register</button>
+                <p><a href="#" id="showLogin">Back to login</a></p>
+            </div>
+            <div id="guestForm" class="hidden">
+                <h2>Guest Access</h2>
+                <input type="text" id="guestName" placeholder="Your name" required>
+                <button id="guestSubmit" class="btn btn-primary btn-block">Continue</button>
+                <p><a href="#" id="backToLogin">Back to login</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Task Detail Modal -->
+    <div id="taskModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <button class="modal-close" id="closeTaskModal"><i class="fas fa-times"></i></button>
+            <div id="taskDetail"></div>
+        </div>
+    </div>
+    
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast hidden"></div>
+    
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
