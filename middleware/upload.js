@@ -2,24 +2,10 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Ensure upload directory exists
-const uploadDir = process.env.UPLOAD_PATH || './uploads';
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Configure storage
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, uploadDir);
-    },
-    filename: function(req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(file.originalname);
-        const name = path.basename(file.originalname, ext);
-        cb(null, name + '-' + uniqueSuffix + ext);
-    }
-});
+// Configure storage - Placeholder for cloud storage
+// In a real application, you would integrate with a cloud storage service like AWS S3, Google Cloud Storage, etc.
+// For now, we'll use memory storage to avoid file system issues on serverless platforms.
+const storage = multer.memoryStorage();
 
 // File filter
 const fileFilter = (req, file, cb) => {
@@ -77,6 +63,5 @@ const handleUploadError = (err, req, res, next) => {
 
 module.exports = {
     upload,
-    handleUploadError,
-    uploadDir
+    handleUploadError
 };
