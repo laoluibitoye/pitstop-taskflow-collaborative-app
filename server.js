@@ -40,8 +40,8 @@ const PORT = process.env.PORT || 3000;
 // Database Connection
 // ========================================
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/taskflow', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+    // useNewUrlParser: true, // Deprecated in MongoDB driver 4.0.0
+    // useUnifiedTopology: true // Deprecated in MongoDB driver 4.0.0
 })
 .then(async () => {
     console.log('✅ MongoDB connected successfully');
@@ -91,9 +91,14 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Serve static files
-app.use(express.static('public'));
-app.use('/uploads', express.static('uploads'));
+// Serve static files from the client/dist directory
+app.use(express.static(path.join(__dirname, 'client', 'dist')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Assuming uploads are still served statically
+
+// Serve the client's index.html for all other routes to enable client-side routing
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 // ========================================
 // API Routes
